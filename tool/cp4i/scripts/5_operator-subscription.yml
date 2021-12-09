@@ -9,4 +9,3 @@ spec:
   name: OPERATOR_NAME
   source: ibm-operator-catalog
   sourceNamespace: openshift-marketplace
-  startingCSV: STARTING_CSV

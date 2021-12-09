@@ -70,7 +70,7 @@ oc apply -f ${vLOG_PATH_TEMP} &> /dev/null && sleep 30
 cat ${vLOG_PATH_TEMP} >> ${vLOG_PATH}
 rm -f ${vLOG_PATH_TEMP}
 
-cat ${vPATH}/scripts/5_operator-subscription.yml | sed "s/NAMESPACE_NAME/${namespace_name}/" | sed "s/STARTING_CSV/${starting_csv}/" | sed "s/CHANNEL_VERSION/${channel_version}/" | sed "s/OPERATOR_NAME/${operator_name}/" > ${vLOG_PATH_TEMP}
+cat ${vPATH}/scripts/5_operator-subscription.yml | sed "s/NAMESPACE_NAME/${namespace_name}/" | sed "s/CHANNEL_VERSION/${channel_version}/" | sed "s/OPERATOR_NAME/${operator_name}/" > ${vLOG_PATH_TEMP}
 oc apply -f ${vLOG_PATH_TEMP} &> /dev/null && sleep 300	
 cat ${vLOG_PATH_TEMP} >> ${vLOG_PATH}
 rm -f ${vLOG_PATH_TEMP}
