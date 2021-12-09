@@ -11,9 +11,13 @@ INSTALLATION: BASE SOURCES:
 Download from SOURCE REPOSITORY (GITHUB): https://github.com/maktup/cp4i-auto-deployment_v2.0.git
  
 $ git clone https://github.com/maktup/cp4i-auto-deployment_v2.0.git
+
 $ cd cloudpak-auto-deployment
+
 $ ls -ltr
+
 $ cd tool / cp4i
+
 $ ls -ltr
 
 
@@ -36,19 +40,24 @@ CURRENTLY, only CP4I is the one that is enabled & working, but the STRUCTURE of 
 LEVEL 2:
 The standard DIRECTORIES managed by the TOOL, here will be 3:
 
-A. Log
-B. properties
-C. scripts
+A. Log.
+
+B. properties.
+
+C. scripts.
 
 
 A. "LOG" DIRECTORY:
 In this directory, the LOGs of the TOOL execution will be AUTO GENERATED, including the trace of the YAMLs executed one after the other.
 The file will handle a standard autogeneration PATTERN which is:
+
 CYCLE CLOUD PAK + _ + YYYYMMDD + .log
+
 
 B. "PROPERTIES" DIRECTORY:
 This will be the only CONFIGURATION FILE that the TOOL will handle, since the objective is NOT to impact the SCRIPT YAMLs that will work only as TEMPLATES.
 The file will handle a standard autogeneration PATTERN which is:
+
 CLOUD PAK + CYCLE .properties
 
 In this case, for the CP4I scenario it will be:
@@ -82,18 +91,25 @@ EXECUTION: TOOL
 Then, from a LINUX instance, connect to OPENSHIFT remotely:
   
 $ oc $ login --token = sha256 ~ c0eD6-kKG7vIQuyVU11bdns86TPyjACKCYZ_lMR-D_8 --server = https: //c106-e.us-south.containers.cloud.ibm.com: 31222
+
 $ oc get nodes -o wide
 
 Then, give the execution permissions to the FILES before executing:
 
 $ cd tool
+
 $ ls
+
 $ cd cp4i
+
 $ ls
+
 $ chmod 777 *. *
 
 Then, we proceed to execute the main SCRIPT of the CP4I installation:
+
 $ sh ./Main.sh
+
 
 IMPORTANT: in the PICTURE you can see that the predefined STEPS of the CP4I installation are being executed & then when the installation of the PLATFORM-NAVIGATOR INSTANCE is finished.
 
