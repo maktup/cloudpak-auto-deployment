@@ -8,9 +8,9 @@ It is necessary to have the client tool: OC (Openshift Client) already installed
 
 INSTALLATION: BASE SOURCES:
 -------------------------
-Download from SOURCE REPOSITORY (GITHUB): https://github.com/maktup/cp4i-auto-deployment_v2.0.git
+Download from SOURCE REPOSITORY (GITHUB): https://github.com/maktup/cloudpak-auto-deployment.git
  
-$ git clone https://github.com/maktup/cp4i-auto-deployment_v2.0.git
+$ git clone https://github.com/maktup/cloudpak-auto-deployment.git
 
 $ cd cloudpak-auto-deployment
 
