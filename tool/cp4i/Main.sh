@@ -57,7 +57,7 @@ echo "${vTRANSACTION}>> Done .."
 ############## VALIDATIONS ABOUT: [SECRET] ############## 
 echo "${vTRANSACTION}> [ STEP 3 OF 6 ]: Adding a 'ImagePull Secret'..${CLEAR}"
 cat ${vPATH}/scripts/3_secret_entitlement-key.oc | sed "s/NAMESPACE_NAME/${namespace_name}/" | sed "s/ENTITLEMENT_KEY_TOKEN/${entitlement_key_token}/" > $vLOG_PATH_TEMP
-oc apply secret ${vLOG_PATH_TEMP} &> /dev/null && sleep 30	
+oc create secret ${vLOG_PATH_TEMP} &> /dev/null && sleep 15
 cat ${vLOG_PATH_TEMP} >> ${vLOG_PATH}
 rm -f ${vLOG_PATH_TEMP}
 echo "${vTRANSACTION}>> Done .."
@@ -66,12 +66,12 @@ echo "${vTRANSACTION}>> Done .."
 ############## VALIDATIONS ABOUT: [OPERATORs] ############## 
 echo "${vTRANSACTION}> [ STEP 4 OF 6 ]: Creating a 'IBM CP4I' Subscriptions..${CLEAR}"
 cat ${vPATH}/scripts/4_operator-group.yml | sed "s/NAMESPACE_NAME/${namespace_name}/" > ${vLOG_PATH_TEMP}
-oc apply -f ${vLOG_PATH_TEMP} &> /dev/null && sleep 30		
+oc apply -f ${vLOG_PATH_TEMP} &> /dev/null && sleep 30
 cat ${vLOG_PATH_TEMP} >> ${vLOG_PATH}
 rm -f ${vLOG_PATH_TEMP}
 
 cat ${vPATH}/scripts/5_operator-subscription.yml | sed "s/NAMESPACE_NAME/${namespace_name}/" | sed "s/CHANNEL_VERSION/${channel_version}/" | sed "s/OPERATOR_NAME/${operator_name}/" > ${vLOG_PATH_TEMP}
-oc apply -f ${vLOG_PATH_TEMP} &> /dev/null && sleep 300	
+oc apply -f ${vLOG_PATH_TEMP} &> /dev/null && sleep 300
 cat ${vLOG_PATH_TEMP} >> ${vLOG_PATH}
 rm -f ${vLOG_PATH_TEMP}
 
