@@ -11,7 +11,6 @@
 clear
 
 vPATH=$(pwd)
-. ${vPATH}/properties/CP4I.properties
 set -a; . "${vPATH}/properties/CP4I.properties";
  
 vCURRENT_DATE=`DATE +%Y%m%d%H%M%S`
@@ -26,29 +25,31 @@ echo "${vTRANSACTION} ******************** [START] ********************"
 echo "${vTRANSACTION} EXECUTING SCRIPTs [YAMLs]..."
  
 ############## VALIDACIONES DE 'OC' ##############
-if ! command -v oc &> /dev/null; then
+if ! command -v oc 2>> ${vLOG_PATH_TEMP}; then
     echo "${vTRANSACTION} oc could not be found." && echo "Please install from here: [https://docs.openshift.com/container-platform/4.9/cli_reference/openshift_cli/getting-started-cli.html]"
     exit
 fi
 
-isloggedIn=`oc whoami &> /dev/null`
+isloggedIn=`oc whoami 2>> ${vLOG_PATH_TEMP}`
 if [ $? -ne 0 ]; then
     echo "${vTRANSACTION} oc is not logged in" && echo "Please you need to do login: [https://docs.openshift.com/container-platform/4.9/cli_reference/openshift_cli/getting-started-cli.html#cli-logging-in_cli-developer-commands]"
     exit
 fi
 
+
 ############## VALIDATIONS ABOUT: [NAMESPACE] ##############  
 echo "${vTRANSACTION}> [ STEP 1 OF 6 ]: Creating the 'new Project/Namespace': [${namespace_name}]..${CLEAR}"
 cat ${vPATH}/scripts/1_new-project.yml | sed "s/NAMESPACE_NAME/${namespace_name}/" > ${vLOG_PATH_TEMP}
-oc apply -f ${vLOG_PATH_TEMP} &> /dev/null  && sleep 30
+oc apply -f ${vLOG_PATH_TEMP} 2>> ${vLOG_PATH_TEMP} && sleep 30
 cat ${vLOG_PATH_TEMP} >> ${vLOG_PATH}
 rm -f ${vLOG_PATH_TEMP}
 echo "${vTRANSACTION}>> Done .."
 
+
 ############## VALIDATIONS ABOUT: [CATALOGs] ##############  
 echo "${vTRANSACTION}> [ STEP 2 OF 6 ]: Adding a IBM 'Operator Catalog'..${CLEAR}"
 cat ${vPATH}/scripts/2_ibm-operator-catalog.yml | sed "s/NAMESPACE_NAME/${namespace_name}/" > ${vLOG_PATH_TEMP}
-oc apply -f ${vLOG_PATH_TEMP} &> /dev/null  && sleep 30
+oc apply -f ${vLOG_PATH_TEMP} 2>> ${vLOG_PATH_TEMP} && sleep 30
 cat ${vLOG_PATH_TEMP} >> ${vLOG_PATH}
 rm -f ${vLOG_PATH_TEMP}
 echo "${vTRANSACTION}>> Done .."
@@ -56,8 +57,10 @@ echo "${vTRANSACTION}>> Done .."
 
 ############## VALIDATIONS ABOUT: [SECRET] ############## 
 echo "${vTRANSACTION}> [ STEP 3 OF 6 ]: Adding a 'ImagePull Secret'..${CLEAR}"
-cat ${vPATH}/scripts/3_secret_entitlement-key.oc | sed "s/NAMESPACE_NAME/${namespace_name}/" | sed "s/ENTITLEMENT_KEY_TOKEN/${entitlement_key_token}/" > $vLOG_PATH_TEMP
-oc create secret ${vLOG_PATH_TEMP} &> /dev/null && sleep 15
+cat ${vPATH}/scripts/3_secret_entitlement-key.oc | sed "s/NAMESPACE_NAME/${namespace_name}/" | sed "s/ENTITLEMENT_KEY_TOKEN/${entitlement_key_token}/" > ${vLOG_PATH_TEMP}
+vQUERYOC=`cat ${vLOG_PATH_TEMP}`
+echo "$vQUERYOC" > ${vLOG_PATH_TEMP}  
+eval "$vQUERYOC" 2>> ${vLOG_PATH_TEMP} && sleep 15
 cat ${vLOG_PATH_TEMP} >> ${vLOG_PATH}
 rm -f ${vLOG_PATH_TEMP}
 echo "${vTRANSACTION}>> Done .."
@@ -66,12 +69,12 @@ echo "${vTRANSACTION}>> Done .."
 ############## VALIDATIONS ABOUT: [OPERATORs] ############## 
 echo "${vTRANSACTION}> [ STEP 4 OF 6 ]: Creating a 'IBM CP4I' Subscriptions..${CLEAR}"
 cat ${vPATH}/scripts/4_operator-group.yml | sed "s/NAMESPACE_NAME/${namespace_name}/" > ${vLOG_PATH_TEMP}
-oc apply -f ${vLOG_PATH_TEMP} &> /dev/null && sleep 30
+oc apply -f ${vLOG_PATH_TEMP} 2>> ${vLOG_PATH_TEMP} && sleep 30
 cat ${vLOG_PATH_TEMP} >> ${vLOG_PATH}
 rm -f ${vLOG_PATH_TEMP}
 
 cat ${vPATH}/scripts/5_operator-subscription.yml | sed "s/NAMESPACE_NAME/${namespace_name}/" | sed "s/CHANNEL_VERSION/${channel_version}/" | sed "s/OPERATOR_NAME/${operator_name}/" > ${vLOG_PATH_TEMP}
-oc apply -f ${vLOG_PATH_TEMP} &> /dev/null && sleep 300
+oc apply -f ${vLOG_PATH_TEMP} 2>> ${vLOG_PATH_TEMP} && sleep 300
 cat ${vLOG_PATH_TEMP} >> ${vLOG_PATH}
 rm -f ${vLOG_PATH_TEMP}
 
@@ -83,11 +86,11 @@ echo "${vTRANSACTION}>> Done .."
 echo "${vTRANSACTION}> [ STEP 5 OF 6 ]: Deploying a Instance of 'Platform-Navigator' (it will take around: 45 min)..${CLEAR}"
 cat ${vPATH}/scripts/6_platform-navigator.yml | sed "s/NAMESPACE_NAME/${namespace_name}/" | sed "s/PLATFORM_NAVIGATOR_NAME/${platform_navigator_name}/" | sed "s/PLATFORM_NAVIGATOR_VERSION/${platform_navigator_version}/" | sed "s/PLATFORM_NAVIGATOR_LICENSE/${platform_navigator_license}/" | sed "s/PLATFORM_NAVIGATOR_STORAGE/${platform_navigator_storage}/" | sed "s/PLATFORM_NAVIGATOR_REPLICAS/${platform_navigator_replicas}/" > ${vLOG_PATH_TEMP}
 	
-oc apply -f ${vLOG_PATH_TEMP} &> /dev/null && sleep 100	
+oc apply -f ${vLOG_PATH_TEMP} 2>> ${vLOG_PATH_TEMP} && sleep 100	
 cat ${vLOG_PATH_TEMP} >> ${vLOG_PATH}
 rm -f ${vLOG_PATH_TEMP}
 
-while [[ $(oc get PlatformNavigator/pn-cloudpak-instance -n ${namespace_name} -o 'jsonpath={..status.conditions[].type}') != "Ready" ]]; do echo "${vTRANSACTION}>>> waiting for 'Platform-Navigator' change to be READY" && sleep 300; done
+while [[ $(oc get PlatformNavigator pn-cloudpak-instance -n ${namespace_name} -o 'jsonpath={..status.conditions[].type}') != "Ready" ]]; do echo "${vTRANSACTION}>>> waiting for 'Platform-Navigator' change to be READY" && sleep 300; done
 echo "${vTRANSACTION}>> Done .."
 
 
