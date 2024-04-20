@@ -1,5 +1,7 @@
 ## CLOUDPAK-AUTO-DEPLOYMENT
 
+"More than 1 year ago I carried out this AUTOMATION that allowed me to carry out several installations of CP4I (2021.3.1) quickly, although now due to the change in the structure of CP4I it no longer applies to modern versions of CP4I, I share it for the knowledge of the IBM community".
+
 This document covers the proposal of a **STANDARD** tool for executing and installing **CLOUD PAKs** on **OPENSHIFT4** in a more automated way (Scripts):
 
 ![alt text](https://github.com/maktup/cloudpak-auto-deployment/blob/master/IMAGE/ResultadoEjecucion.jpg?raw=true)
