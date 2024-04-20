@@ -1,7 +1,8 @@
-
 ## CLOUDPAK-AUTO-DEPLOYMENT
 
 This document covers the proposal of a **STANDARD** tool for executing and installing **CLOUD PAKs** on **OPENSHIFT4** in a more automated way (Scripts):
+
+![alt text](https://github.com/maktup/cloudpak-auto-deployment/blob/master/IMAGE/ResultadoEjecucion.jpg?raw=true)
 
 
 ## 'VALIDATION: PREREQUISITES':
